@@ -5,37 +5,38 @@ import (
 	"sort"
 )
 
-// If the key(values of the slice) is not equal
-// to the already present value in new slice (list)
-// then we append it. else we jump on another element.
-func unique(slice []rune) []rune {
-	keys := make(map[rune]bool)
-	list := []rune{}
-	for _, entry := range slice {
-		if _, value := keys[entry]; !value {
-			keys[entry] = true
-			list = append(list, entry)
-		}
-	}
-	return list
-}
-
 func closeStrings(word1 string, word2 string) bool {
 	if len(word1) != len(word2) {
 		return false
 	}
 
-	runes1 := []rune(word1)
-	sort.Slice(runes1, func(i, j int) bool {
-		return runes1[i] < runes1[j]
-	})
+	const length = len("abcdefghijklmnopqrstuvwxyz")
+	const rune_inc = 97
 
-	runes2 := []rune(word2)
-	sort.Slice(runes2, func(i, j int) bool {
-		return runes2[i] < runes2[j]
-	})
+	count1, count2 := make([]int, length), make([]int, length)
+	for _, rune := range word1 {
+		count1[rune-rune_inc]++
+	}
+	for _, rune := range word2 {
+		count2[rune-rune_inc]++
+	}
 
-	return string(unique(runes1)) == string(unique(runes2))
+	for i := 0; i < length; i++ {
+		if (count1[i] == count2[i]) || (count1[i] > 0 && count2[i] > 0) {
+			continue
+		}
+		return false
+	}
+
+	sort.Ints(count1)
+	sort.Ints(count2)
+
+	for i := 0; i < length; i++ {
+		if count1[i] != count2[i] {
+			return false
+		}
+	}
+	return true
 }
 
 func main() {
