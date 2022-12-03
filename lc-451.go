@@ -6,37 +6,21 @@ import (
 )
 
 func frequencySort(s string) string {
-	c := make(map[rune]int)
+	count := make([]int, 128)
 	for _, char := range s {
-		_, ok := c[char]
-		if !ok {
-			c[char] = 0
-		}
-		c[char]++
+		count[char]++
 	}
-
-	keys := make([]rune, 0, len(c))
-	for key := range c {
-		keys = append(keys, key)
-	}
-
-	sort.SliceStable(keys, func(i, j int) bool {
-		return c[keys[i]] > c[keys[j]]
+	r := []rune(s)
+	sort.Slice(r, func(i, j int) bool {
+		return (count[r[i]] > count[r[j]]) ||
+			(count[r[i]] == count[r[j]]) &&
+				r[i] > r[j]
 	})
-
-	var ss string = ""
-	for _, sym := range keys {
-		for c[rune(sym)] > 0 {
-			ss += string(sym)
-			c[rune(sym)]--
-		}
-	}
-
-	return ss
+	return string(r)
 }
 
 func main() {
-	fmt.Println(frequencySort("Aabb"))
-	// fmt.Println(frequencySort("jfhgjfhgjfhgghj"))
+	// fmt.Println(frequencySort("Aabb"))
 	// fmt.Println(frequencySort("tree"))
+	fmt.Println(frequencySort("loveleetcode"))
 }
