@@ -12,22 +12,29 @@ func abs(x int) int {
 	return x
 }
 
-func abs_diff(nums ...int) int {
-	if len(nums) == 0 {
-		return 0
-	}
-	result := 0
-	for _, num := range nums {
-		result += num
-	}
-	return result / len(nums)
-}
-
 func minimumAverageDifference(nums []int) int {
+	// fmt.Println(nums)
 	min_diff := math.MaxInt
 	min_diff_i := 0
+
+	sums := make([]int, len(nums))
+	for i, num := range nums {
+		for j, _ := range nums[i:] {
+			sums[i+j] += num
+		}
+	}
+	fmt.Println(sums)
+	all_sum := sums[len(sums)-1]
+
 	for i, _ := range nums {
-		avg_diff := abs(abs_diff(nums[:i+1]...) - abs_diff(nums[i+1:]...))
+		// first_diff := sums[i] / (i + 1)
+		last_diff := 0
+		if len(sums) != i+1 {
+			last_diff = (all_sum - sums[i]) / (len(sums) - i - 1)
+		}
+		// fmt.Println(" * ", last_diff)
+		// fmt.Println("Last = ", last_diff)
+		avg_diff := abs((sums[i] / (i + 1)) - last_diff)
 		if avg_diff < min_diff {
 			min_diff = avg_diff
 			min_diff_i = i
