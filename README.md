@@ -2,6 +2,7 @@
 
 Problem No | Lang | Tags
 ---|---|---
+328 | `go` | `ListNode` `ptr`
 451 | `go` | `sort`
 876 | `go` | `ListNode` `ptr`
 1657 | `go` | `sort`
