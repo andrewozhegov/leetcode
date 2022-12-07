@@ -10,19 +10,7 @@ type TreeNode struct {
 	Right *TreeNode
 }
 
-func InsertRecursive(root *TreeNode, val int) *TreeNode {
-	if root == nil {
-		root = &TreeNode{val, nil, nil}
-	} else if val > root.Val {
-		root.Right = InsertRecursive(root.Right, val)
-	} else {
-		root.Left = InsertRecursive(root.Left, val)
-	}
-
-	return root
-}
-
-func Insert(root *TreeNode, val int) *TreeNode {
+func (root *TreeNode) Insert(val int) *TreeNode {
 	current := root
 	previous := root
 
@@ -65,9 +53,9 @@ func rangeSumBST(root *TreeNode, low int, high int) int {
 
 func main() {
 
-	root := Insert(nil, 10)
+	root := &TreeNode{10, nil, nil}
 	for _, val := range []int{5, 15, 3, 7, 18} {
-		Insert(root, val)
+		root.Insert(val)
 	}
 
 	fmt.Println(rangeSumBST(root, 7, 15))
